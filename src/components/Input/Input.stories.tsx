@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { storiesOf } from '@storybook/react';
 
 import Input from './Input';
+import { expiryDateFormatter } from '../../utils/formatter/expiryDateFormatter';
 
-const DefaultText = ({ error }) => {
+interface DefaultTextProps {
+  error?: string;
+  formatter?: (text: string) => string;
+}
+const DefaultText: FC<DefaultTextProps> = ({ error, formatter }) => {
   const [text, setText] = useState('');
 
   const handleInputChange = (
@@ -19,6 +24,7 @@ const DefaultText = ({ error }) => {
       value={text}
       onChange={handleInputChange}
       error={error}
+      formatter={formatter}
     />
   );
 };
@@ -30,4 +36,7 @@ storiesOf('Input', module)
 
   .add('Error', () => {
     return <DefaultText error="Required" />;
+  })
+  .add('With Formatter', () => {
+    return <DefaultText formatter={expiryDateFormatter} />;
   });
